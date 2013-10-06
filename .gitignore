@@ -1,0 +1,13 @@
+
+static/js/jquery-ui-1.10.3.custom/
+templatemo_341_web_store/
+django-debug-toolbar-master
+gtd/private_settings.py
+log/*.log
+media/upfiles/*
+media/
+nppBackup/
+*.pyc
+*.zip
+*.tar
+*.gz
