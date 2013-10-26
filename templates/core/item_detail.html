@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="well">
+    <div class="name">
+        <h1><p class="text-info">{% trans "Name:"%}</p>{{object.name}}</h1>
+        <p class="span2">{{object.description}}</p>
+        <p class="span2">{{object.description}}</p>
+    </div>
+</div>
+{% endblock content %}

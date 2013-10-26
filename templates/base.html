@@ -1,18 +1,39 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
-	<head>
-        {% block css %}
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
-        {% endblock %} 
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+         <!-- <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/css.css" /> -->
+        <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui-1.10.3.custom.css" />
+        <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+        <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" />
+        <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/custom.css" />
+        <link rel="SHORTCUT ICON" href="{{ STATIC_URL }}images/favicon.ico" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <title>
+            {% block title %}
+                {% if page_title %}{{ page_title }} - {% endif %}{{ site_name }}
+            {% endblock %}
+        </title>
+        <meta name="keywords" content="{{ meta_keywords }}" />
+        <meta name="description" content="{{ meta_description }}" />
+        <meta name="verify-v1" content="bPjaC6MIttNNSgZfZXROVZ4RPbKJkyv7rAM2sOuUWk0=" />	
     </head>
-    
     <body>
-        {% block content %}
-        {% endblock %}
-        
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
         {% block js %}
-            <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            
+            <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+           
+            <script type="text/javascript" src="{{ STATIC_URL }}js/scripts.js"></script>
+            
         {% endblock %}
+
+        {% comment %}
+        {% include 'marketing/google_analytics.html' %}
+        {% block receipt_analytics %}{% endblock %}
+        {% endcomment %}
     </body>
 </html>

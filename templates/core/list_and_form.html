@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="left span2 pull-left">
+    <form class="form-horizontal" method="post" action=".">
+        {% csrf_token %}
+        {{form.as_p}}
+        
+        <div class="control">
+            <input id="submit_form"type="submit" value="submit" />
+        </div>
+    </form>
+    
+</div>
+
+<div class="list_wrapper right span8 pull-right">
+    <h3>{{ page_title }} items</h3>
+    {% include "core/object_list.html" %}
+</div>
+
+{% endblock %}
+{% block js%}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#id_image").addClass("btn btn-warning");
+            $("#id_file").addClass("btn btn-warning");
+            $("#submit_form").addClass("btn btn-warning");
+            var project_select = $("#id_project");
+            project_select.attr("disabled", "disabled");
+            $("ul input[name=status]").change(function(){
+                var status_radio = $(this);
+                
+                if (status_radio.attr("value") == "3" ){
+                    project_select.removeAttr("disabled");
+                }
+                else {
+                    //var attr = project_select.attr("disabled");
+                    //if(typeof attr === 'undefined' && attr === false){
+                        project_select.attr("disabled", "disabled");
+                        $("#id_project").val("");
+                    //}
+                }
+            });
+        });
+    </script>
+    
+{% endblock js%}
