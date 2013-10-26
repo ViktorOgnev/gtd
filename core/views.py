@@ -48,7 +48,18 @@ def get_page_title(value):
         if choice[0] == value:
             return choice[1]
             
-
+def all_actions(request, template_name="core/all_actions.html"):
+    context = {}
+    action_lists = []  
+    for choice in Item.STATUS_CHOICES:  
+        action_lists.append({"name":choice[1], "actions":[]})
+        for action in Item.objects.filter(status=choice[0]):
+            action_lists[-1]["actions"].append(action)
+            
+    context["action_lists"] = action_lists            
+    return render_to_response(template_name, context,
+                              context_instance=RequestContext(request))
+    
 def blank_redirect(request):
     return HttpResponseRedirect(reverse('core_item_list_and_form', kwargs={'status':1}))
 

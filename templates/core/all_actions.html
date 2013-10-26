@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% load core_tags %}
+
+{% block content %}
+    {% for list in action_lists %}
+        <h3>{{list.name}}</h3>
+        {% object_list list.actions %}
+    {% endfor %}
+{% endblock content %}

@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% load core_tags %}
+
 {% block content %}
 <div class="left span2 pull-left">
     <form class="form-horizontal" method="post" action=".">
@@ -14,7 +17,7 @@
 
 <div class="list_wrapper right span8 pull-right">
     <h3>{{ page_title }} items</h3>
-    {% include "core/object_list.html" %}
+    {% object_list object_list %}
 </div>
 
 {% endblock %}
