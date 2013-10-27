@@ -2,9 +2,16 @@
 
 {% load core_tags %}
 
-{% block content %}
+{% block content_wide %}
+    <ul class="list-inline">
     {% for list in action_lists %}
-        <h3>{{list.name}}</h3>
-        {% object_list list.actions %}
+        <li class="col-md-4">
+            <h3>{{list.name}}</h3>
+            {% object_list list.actions list.color %}  
+        </li>
     {% endfor %}
-{% endblock content %}
+    </ul>
+    
+        
+    
+{% endblock content_wide %}

@@ -9,6 +9,8 @@ from django.views.generic.edit import ProcessFormView
 from .forms import ItemForm
 from .models import Item
 
+COLORS = ['success', 'warning', 'danger', 'error', 'info',
+          'success', 'warning', 'danger', 'error', 'info']
 
 def item_list_and_form(request, status, template_name="core/list_and_form.html"):
     context = {}
@@ -31,6 +33,7 @@ def item_list_and_form(request, status, template_name="core/list_and_form.html")
                 status = 1
     context['object_list'] = Item.objects.values().filter(status=status)
     context['page_title'] = get_page_title(status)
+    context['color'] = COLORS[status-1]
     context.update(csrf(request))
     return render_to_response(template_name, context,
                               context_instance=RequestContext(request))
@@ -52,7 +55,7 @@ def all_actions(request, template_name="core/all_actions.html"):
     context = {}
     action_lists = []  
     for choice in Item.STATUS_CHOICES:  
-        action_lists.append({"name":choice[1], "actions":[]})
+        action_lists.append({"name":choice[1], "actions":[], "color":COLORS[choice[0] - 1]})
         for action in Item.objects.filter(status=choice[0]):
             action_lists[-1]["actions"].append(action)
             
