@@ -17,7 +17,7 @@
         </title>
         <meta name="keywords" content="{{ meta_keywords }}" />
         <meta name="description" content="{{ meta_description }}" />
-        	
+        
     </head>
     <body>
         <div class="container">
@@ -33,7 +33,7 @@
                     <a class="navbar-brand text-success" href="#">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         Get this done!
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                 </div>
                 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -75,7 +75,7 @@
                 </div><!-- /.navbar-collapse -->
             </nav>
         </div>
-        <div class="container">
+        <div id="main" class="container">
             
             {% block content %}{% endblock %}
         </div>
@@ -88,9 +88,23 @@
         <script type="text/javascript" src="{{ STATIC_URL }}js/scripts.js"></script>
         <script type="text/javascript">
             $(document).ready(function (){
+                prepareCsrf();
                 $("ul.nav>li.active").removeClass("active");
-                $("ul.nav a[href$='{{request.path}}']").parent().addClass("active");
+                $("ul.nav a[href$='{{request.path}}']").parent(
+                    ).addClass("active");
+                
+                $(".remove_button").click(function(event){
+                    removeProcess(event, removeSuccess,
+                                  "{% url 'core_remove_item' %}");
+                });
+                
+                $(".edit_button").click(function(event){
+                    editProcess(event, editSuccess,
+                                "{% url 'core_load_edit_item_form'%}");
+                });
             });
+            
+            
         </script>
         
         {% endblock %}

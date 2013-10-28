@@ -3,22 +3,14 @@
 {% load core_tags %}
 
 {% block content %}
-<div class="left pull-left col-md-3">
-    <form class="form-horizontal" method="post" action="." role="form">
-        <div class="form-group">
-            {% csrf_token %}
-            {{form.as_p}}
-        </div>
-        
-        <div class="control">
-            <input id="submit_form"type="submit" value="submit" />
-        </div>
-    </form>
-    
+<div id="item_form">
+    {% include "core/item_form.html" %}
 </div>
+
+
 <p>{{request.path.split.1}}</p>
 
-<div class="list_wrapper right span8 pull-right">
+<div class="list_wrapper right col-md-9 pull-right">
     <h3>{{ page_title }} items</h3>
     {% object_list object_list color %}
 </div>
@@ -56,5 +48,6 @@
             });
         });
     </script>
+<script src="{{STATIC_URL}}tiny_mce/tiny_mce.js}}"type="text/javascript"></script>
     
 {% endblock js%}

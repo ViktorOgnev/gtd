@@ -1,3 +1,13 @@
-<form action="{% url 'core_inbasket'%}">
-    {{ form.as_p }}
-</form>
+<div class="left pull-left col-md-3">
+    <form class="form-horizontal" method="post" action="{{action}}" role="form">
+        <div class="form-group">
+            {% csrf_token %}
+            {{form.as_p}}
+        </div>
+        
+        <div class="control">
+            <input id="submit_form"type="submit" value="submit" />
+        </div>
+    </form>
+    
+</div>

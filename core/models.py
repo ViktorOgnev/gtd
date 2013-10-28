@@ -1,13 +1,15 @@
 from datetime import datetime
+
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
+
 from tinymce.models import HTMLField
 
-from utils.aux_utils import get_image_path, get_file_path
+from utils.aux_utils import get_image_path, get_file_path, make_hash
 
-from .signal_processors import (add_m2m_connections, remove_m2m_connections,
-                                create_thumbnail, create_category_banner)
+from .signal_processors import (create_thumbnail)
 from .storage import OverwriteStorage
 
 
@@ -53,7 +55,7 @@ class Item(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, default=IN_BASKET)
     
     # Helper fields
-    slug = models.CharField(max_length=255, blank=True, unique=True)
+    slug = models.SlugField(max_length=255, blank=True, unique=True)
     date_added = models.DateTimeField()
     date_updated = models.DateTimeField()
 
@@ -64,14 +66,20 @@ class Item(models.Model):
     def __unicode__(self):
         return self.name
     
+    
     def save(self, force_insert=False, force_update=False):
         if self.date_added:
             self.date_updated = datetime.now()
         else:
             self.date_added = self.date_updated = datetime.now()
-        if not self.slug:
-            self.slug = slugify(self.name)
         
+        if not self.slug:
+            self.slug = slugify(make_hash(self.name, str(self.status)))
+        
+        if not self.brief_description:
+            self.brief_description = self.description[0:255]
+            
         super(Item, self).save(force_insert, force_update)
     
-        
+    def get_absolute_url(self):
+        return reverse('core_item_detail', args=(self.slug,))

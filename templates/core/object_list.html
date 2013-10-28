@@ -8,12 +8,14 @@
             <th>Date updated</th>
             <th>Image</th>
             <th>Project</th>
+            <th>Actions</th>
         </thead>
         <tbody>
             {% for object in object_list %}
             <tr class='{{color}}'>
+                {% with object.slug as slug %}
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{% url 'core_item_detail' slug=object.slug %}">{{ object.name }}</a></td>
+                <td><a href="{% url 'core_item_detail' slug=slug %}">{{ object.name }}</a></td>
                 <td>{{object.brief_description}}</td>
                 <td>{{object.date_added}}</td>
                 <td>{{object.date_updated}}</td>
@@ -25,6 +27,15 @@
                     <p>{{ object.project.name }}</p>
                     {% endif %}
                 </td>
+                <td>
+                    <button type="button" class="btn btn-default remove_button" data-slug="{{slug}}" >
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button type="button" class="btn btn-default edit_button" data-slug="{{slug}}">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </td>
+                {% endwith %}
             </tr>
             {% endfor %}
             
