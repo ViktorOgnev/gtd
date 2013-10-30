@@ -6,8 +6,8 @@ urlpatterns = patterns('',
     url(r'^/?$', 'core.views.all_actions',
         name='core_all_actions'),    
     
-    url(r'load-item-form/?$', 'core.views.ajax_load_edit_item_form',
-        name='core_load_edit_item_form'),
+    url(r'edit-item/(?P<slug>[-\w]+)/?$', 'core.views.edit_item',
+        name='core_edit_item'),
         
     url(r'^remove-item/?$', 'core.views.ajax_remove_item',
         name='core_remove_item'),

@@ -1,0 +1,16 @@
+{% for field in form %}
+<div class="form-group">
+    {% if field.errors %}
+    <p class="text-error">{{ field.errors }}</p>
+    {% endif %}
+    <label  for="{{ field.id_for_label }}" class="col-lg-2 control-label">{{ field.label }}</label>
+    <div class="col-lg-10">
+        <input type="{{field.field.widget.input_type}}"
+               class="form-control"
+               name="{{ field.html_name }}"
+               {% if field.value %}value="{{ field.value }}"{%endif%}
+               placeholder="{{field.label}}"/>
+    </div>
+    
+</div>
+{% endfor %}

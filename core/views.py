@@ -1,5 +1,6 @@
 import json
 from django.core.context_processors import csrf
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -13,9 +14,12 @@ from .models import Item
 
 COLORS = ['success', 'warning', 'danger', 'error', 'info',
           'success', 'warning', 'danger', 'error', 'info']
-
-def item_list_and_form(request, status, template_name="core/list_and_form.html",
-                       form=None ):
+@login_required
+def item_list_and_form(request,
+                       status,
+                       template_name="core/list_and_form.html",
+                       action=".",
+                       form=None):
     context = {}
     # If it's POST process a form 
     if request.method == 'POST':
@@ -27,19 +31,19 @@ def item_list_and_form(request, status, template_name="core/list_and_form.html",
             status = form.cleaned_data["status"]
     # If it's a get - just rende an object list and an empty form
     else:
-        if not form: 
-            context['form'] = ItemForm()
+        context['form'] = form if form else ItemForm()
         status = check_int(status)
+        
     context['object_list'] = Item.objects.values().filter(status=status)
     context['page_title'] = get_page_title(status)
     context['color'] = COLORS[status-1]
-    context['action'] = "."
+    context['action'] = action
     context.update(csrf(request))
     return render_to_response(template_name, context,
                               context_instance=RequestContext(request))
 
 
-
+@login_required
 def item_detail(request, slug, template_name="core/item_detail.html"):
     context = {}
     item = Item.objects.get(slug=slug)
@@ -64,7 +68,7 @@ def get_page_title(value):
     for choice in Item.STATUS_CHOICES:
         if choice[0] == value:
             return choice[1]
-            
+@login_required            
 def all_actions(request, template_name="core/all_actions.html"):
     context = {}
     action_lists = []  
@@ -80,6 +84,7 @@ def all_actions(request, template_name="core/all_actions.html"):
 def blank_redirect(request):
     return HttpResponseRedirect(reverse('core_item_list_and_form', kwargs={'status':1}))
 
+@login_required
 def ajax_remove_item(request):
     result = 'False'
     slug = request.REQUEST.get("slug")
@@ -91,6 +96,7 @@ def ajax_remove_item(request):
     json_response = json.dumps({'success': result})
     return HttpResponse(json_response, 
                         content_type='application/javascript; charset=utf-8')
+
 def check_int(value):
     # prevent non-int values being passed
     if not isinstance(value, int):
@@ -100,19 +106,22 @@ def check_int(value):
             value = 1
     return value
         
-def ajax_load_edit_item_form(request):
+@login_required
+def edit_item(request, slug):
     context = {}
-    slug = request.REQUEST.get("slug", "")
     item = Item.objects.get(slug=slug)
-    if item:
-        form = ItemForm(instance=item)
-    else:
-        form = ItemForm()
-        
-    template_name = "core/item_form.html"
-    context["form"] = form 
-    context["action"] = item.get_absolute_url()
-    html = render_to_string(template_name, context)
-    json_response = json.dumps({"success": "True", "html": html})
-    return HttpResponse(json_response,
-                        content_type='application/javascript; charset=utf-8') 
+    form = ItemForm(instance=item) if item else None
+    # template_name = "core/item_form.html"
+    # context["form"] = form 
+    action = item.get_absolute_url()
+    # contex.update(csrf(request))
+    return item_list_and_form(request, item.status, form=form, action=action)
+    
+    
+    
+    
+    
+    
+    
+    
+    

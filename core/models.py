@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
@@ -58,6 +59,7 @@ class Item(models.Model):
     slug = models.SlugField(max_length=255, blank=True, unique=True)
     date_added = models.DateTimeField()
     date_updated = models.DateTimeField()
+    user = models.ForeignKey(User, null=True)
 
     class Meta:
         verbose_name = _("Item")

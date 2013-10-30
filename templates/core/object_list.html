@@ -13,7 +13,7 @@
         <tbody>
             {% for object in object_list %}
             <tr class='{{color}}'>
-                {% with object.slug as slug %}
+                {% with slug=object.slug %}
                 <td>{{ forloop.counter }}</td>
                 <td><a href="{% url 'core_item_detail' slug=slug %}">{{ object.name }}</a></td>
                 <td>{{object.brief_description}}</td>
@@ -31,9 +31,10 @@
                     <button type="button" class="btn btn-default remove_button" data-slug="{{slug}}" >
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
-                    <button type="button" class="btn btn-default edit_button" data-slug="{{slug}}">
+                    <a href="{% url 'core_edit_item' slug=slug %}" class="btn btn-default edit-link">
                         <span class="glyphicon glyphicon-edit"></span>
-                    </button>
+                    </a>
+                    
                 </td>
                 {% endwith %}
             </tr>

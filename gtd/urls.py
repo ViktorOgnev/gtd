@@ -10,5 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^accounts/register/?$', 'accounts.views.register', name="register"),
     url(r'', include('core.urls')),
 )

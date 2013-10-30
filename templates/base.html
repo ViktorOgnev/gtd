@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -21,59 +21,7 @@
     </head>
     <body>
         <div class="container">
-            <nav class="navbar navbar-default" role="navigation">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand text-success" href="#">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        Get this done!
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                </div>
-                
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class=""><a href="{% url 'core_all_actions' %}">All-actions</a></li>
-                        <li class="active"><a href="{% url 'core_item_list_and_form' 1 %}">Inbasket</a></li>
-                        <li ><a href="{% url 'core_item_list_and_form' 6 %}">Next actions</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Categories<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Calendar</a></li>
-                                <li><a href="#">Projects</a></li>
-                                <li><a href="#">Project Plans</a></li>
-                                <li><a href="#">References</a></li>
-                                <li><a href="#">Someday-maybe</a></li>
-                                <li><a href="#">Trash</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Link</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </nav>
+            {% include "navbar.html" %}
         </div>
         <div id="main" class="container">
             
@@ -90,7 +38,7 @@
             $(document).ready(function (){
                 prepareCsrf();
                 $("ul.nav>li.active").removeClass("active");
-                $("ul.nav a[href$='{{request.path}}']").parent(
+                $("ul.nav a[href='{{request.path}}']").parent(
                     ).addClass("active");
                 
                 $(".remove_button").click(function(event){
@@ -98,10 +46,7 @@
                                   "{% url 'core_remove_item' %}");
                 });
                 
-                $(".edit_button").click(function(event){
-                    editProcess(event, editSuccess,
-                                "{% url 'core_load_edit_item_form'%}");
-                });
+                
             });
             
             
