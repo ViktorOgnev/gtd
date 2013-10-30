@@ -5,3 +5,22 @@
     top: 50%;
     left: 50%;
 }
+#item_form{
+    margin-top: 33px;
+    left: -20px;
+    
+}
+#scheme{
+    margin: 0px;
+    
+}
+#scheme>img{
+    max-width:18%; 
+    height:auto;
+    position:fixed;
+    top:80px;
+    
+}
+#list_wrapper{
+    left: -10px;
+}

@@ -4,6 +4,8 @@ $(document).ready(function(){
 
 
 function prepareDocument (){
+    $('input[type=file]').bootstrapFileInput();
+    $('.file-inputs').bootstrapFileInput();
     statusBox;
 }; 
 

@@ -3,7 +3,7 @@ from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.generic import FormView, ListView, DetailView, CreateView
@@ -16,25 +16,28 @@ COLORS = ['success', 'warning', 'danger', 'error', 'info',
           'success', 'warning', 'danger', 'error', 'info']
 @login_required
 def item_list_and_form(request,
-                       status,
+                       status=Item.IN_BASKET,
                        template_name="core/list_and_form.html",
                        action=".",
                        form=None):
     context = {}
+    user = request.user
     # If it's POST process a form 
     if request.method == 'POST':
         postdata = request.POST.copy()
         form = ItemForm(postdata)
         context['form'] = form
         if form.is_valid():
-            form.save()
+            item = form.save(commit=False)
+            item.user = user
+            item.save()
             status = form.cleaned_data["status"]
     # If it's a get - just rende an object list and an empty form
     else:
         context['form'] = form if form else ItemForm()
         status = check_int(status)
         
-    context['object_list'] = Item.objects.values().filter(status=status)
+    context['object_list'] = Item.objects.values().filter(status=status, user=user)
     context['page_title'] = get_page_title(status)
     context['color'] = COLORS[status-1]
     context['action'] = action
@@ -46,17 +49,17 @@ def item_list_and_form(request,
 @login_required
 def item_detail(request, slug, template_name="core/item_detail.html"):
     context = {}
-    item = Item.objects.get(slug=slug)
+    user = request.user
+    item = get_object_or_404(Item, slug=slug, user=user)
     # If it's a POST than we have an item  edit
     if request.method == 'POST':
-        form = ItemForm(request, item)
+        form = ItemForm(request.POST.copy(), instance=item)
         if form.is_valid():
             form.save()
+        kwargs = {'status': check_int(form.cleaned_data["status"]),
+                  'form': form}
         
-        url = reverse('core_item_list_and_form',
-                      status=check_int(form.cleaned_data["status"]),
-                      form=form)
-        return HttpResponseRedirect(url)
+        return item_list_and_form(request, **kwargs)
         
             
     # Otherwise it's a simple GET and we just render a form      
@@ -71,10 +74,11 @@ def get_page_title(value):
 @login_required            
 def all_actions(request, template_name="core/all_actions.html"):
     context = {}
-    action_lists = []  
+    action_lists = []
+    user = request.user
     for choice in Item.STATUS_CHOICES:  
         action_lists.append({"name":choice[1], "actions":[], "color":COLORS[choice[0] - 1]})
-        for action in Item.objects.filter(status=choice[0]):
+        for action in Item.objects.filter(status=choice[0], user=user):
             action_lists[-1]["actions"].append(action)
             
     context["action_lists"] = action_lists            
@@ -110,7 +114,9 @@ def check_int(value):
 def edit_item(request, slug):
     context = {}
     item = Item.objects.get(slug=slug)
-    form = ItemForm(instance=item) if item else None
+    form = None
+    if item and request.user == item.user:
+        form = ItemForm(instance=item) 
     # template_name = "core/item_form.html"
     # context["form"] = form 
     action = item.get_absolute_url()

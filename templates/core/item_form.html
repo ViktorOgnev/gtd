@@ -1,8 +1,8 @@
-<div class="left pull-left col-md-3">
+<div class="left">
     <form class="form-horizontal" method="post" action="{{action}}" role="form">
         <div class="form-group">
             {% csrf_token %}
-            {{form.as_p}}
+            {% include "core/form_fields.html"%}
         </div>
         
         <div class="control">
@@ -11,3 +11,5 @@
     </form>
     
 </div>
+
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap_file_input.js"></script>

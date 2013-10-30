@@ -3,30 +3,31 @@
 {% load core_tags %}
 
 {% block content %}
-<div id="item_form">
+<div id="item_form" class="col-md-2 pull-right">
     {% include "core/item_form.html" %}
 </div>
 
 
 <p>{{request.path.split.1}}</p>
 
-<div class="list_wrapper right col-md-9 pull-right">
+<div id="list_wrapper"class="col-md-9 pull-left">
     <h3>{{ page_title }} items</h3>
     {% object_list object_list color %}
 </div>
 
 {% endblock %}
 {% block content_wide %}
-    <div class="scheme col-md-2">
-        <img src="{{STATIC_URL}}img/gtd-scheme.png" alt="" style="max-width:18%; height:auto; position:fixed; top:80px;"/>
+    <div id="scheme" class="col-md-2 pull-left">
+        <img src="{{STATIC_URL}}img/gtd-scheme.png" alt=""/>
     </div>
 {% endblock content_wide %}
 {% block js%}
     {{ block.super }}
     <script type="text/javascript">
         $(document).ready(function(){
-            $("#id_image").addClass("btn btn-warning");
-            $("#id_file").addClass("btn btn-warning");
+            //$("#id_image").addClass("btn btn-warning");
+            //$("#id_file").addClass("btn btn-warning");
+            $(".file-input-wrapper").addClass("btn-success");
             $("#submit_form").addClass("btn btn-warning");
             $("#id_status").addClass("list-unstyled");
             $("#id_status>li:nth-child(2n)").addClass("pull-right");

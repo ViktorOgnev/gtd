@@ -1,7 +1,8 @@
 \<!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/css.css" /> -->
         <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui-1.10.3.custom.css" />
         <link rel="Stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css" />
@@ -20,11 +21,9 @@
         
     </head>
     <body>
-        <div class="container">
-            {% include "navbar.html" %}
-        </div>
+        
         <div id="main" class="container">
-            
+            {% include "navbar.html" %}
             {% block content %}{% endblock %}
         </div>
         <div class="wide">
